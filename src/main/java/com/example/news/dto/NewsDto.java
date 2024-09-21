@@ -1,15 +1,15 @@
 package com.example.news.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
 
+import javax.management.Descriptor;
 import java.time.LocalDate;
 
 @Builder
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 public class NewsDto {
     private String title;
