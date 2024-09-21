@@ -3,6 +3,7 @@ package com.example.news.service;
 import com.example.news.dto.NewNewsDto;
 import com.example.news.dto.NewsDto;
 import com.example.news.dto.NewsParamDto;
+import com.example.news.dto.UpdateNewsDto;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public interface NewsService {
     NewsDto getNewsById(Integer id);
     NewsDto addNews(NewNewsDto newNewsDto);
 
-    NewsDto updateNews(Integer newsId, NewNewsDto newNewsDto);
+    NewsDto updateNews(Integer newsId, UpdateNewsDto updateNewsDto);
 
     void deleteNews(Integer newsId);
 }

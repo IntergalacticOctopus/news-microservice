@@ -3,6 +3,7 @@ package com.example.news.service;
 import com.example.news.dto.NewNewsDto;
 import com.example.news.dto.NewsDto;
 import com.example.news.dto.NewsParamDto;
+import com.example.news.dto.UpdateNewsDto;
 import com.example.news.exseption.errors.NotFoundException;
 import com.example.news.mapper.NewsMapper;
 import com.example.news.model.News;
@@ -27,46 +28,45 @@ public class NewsServiceImpl implements NewsService {
         Integer userId = newsParamDto.getUserId();
         LocalDate publicationDate = newsParamDto.getPublicationDate();
         List<News> newsList = newsRepository.getNewsByParams(theme, userId, publicationDate, pageRequest);
-        List<NewsDto> newsDtoList = newsList.stream()
+        if (newsList.isEmpty()) {
+            throw new NotFoundException("Новостей по данному запросу не найдено");
+        }
+        return newsList.stream()
                 .map(news -> newsMapper.toNewsDto(news))
                 .collect(Collectors.toList());
-        return newsDtoList;
     }
     public NewsDto getNewsById (Integer id) {
         final News news = newsRepository.getByNewsId(id)
                 .orElseThrow(
                         () -> new NotFoundException("Новость не найдена или уже удалена")
                 );
-        NewsDto newsDto = newsMapper.toNewsDto(news);
-        return newsDto;
+        return newsMapper.toNewsDto(news);
     }
     public NewsDto addNews(NewNewsDto newNewsDto) {
         Theme theme = new Theme (newNewsDto.getTheme());
         News news = newsMapper.toNews(newNewsDto, theme);
         final News newsFromBd = newsRepository.save(news);
-        NewsDto newsDto = newsMapper.toNewsDto(newsFromBd);
-        return newsDto;
+        return newsMapper.toNewsDto(newsFromBd);
     }
-    public NewsDto updateNews(Integer newsId, NewNewsDto newNewsDto) {
+    public NewsDto updateNews(Integer newsId, UpdateNewsDto updateNewsDto) {
         News newsFromDb = newsRepository.findById(newsId)
                 .orElseThrow(
                         () -> new NotFoundException("Новость не найдена")
                 );
-        if (newNewsDto.getTitle() != null) {
-            newsFromDb.setTitle(newNewsDto.getTitle());
+        if (updateNewsDto.getTitle() != null) {
+            newsFromDb.setTitle(updateNewsDto.getTitle());
         }
-        if (newNewsDto.getUserId() != null) {
-            newsFromDb.setUserId(newNewsDto.getUserId());
+        if (updateNewsDto.getUserId() != null) {
+            newsFromDb.setUserId(updateNewsDto.getUserId());
         }
-        if (newNewsDto.getTheme() != null) {
+        if (updateNewsDto.getTheme() != null) {
             Theme existingTheme = newsFromDb.getTheme();
-            existingTheme.setThemeName(newNewsDto.getTheme());
+            existingTheme.setThemeName(updateNewsDto.getTheme());
         }
-        if (newNewsDto.getPublicationDate() != null) {
-            newsFromDb.setPublicationDate(newNewsDto.getPublicationDate());
+        if (updateNewsDto.getPublicationDate() != null) {
+            newsFromDb.setPublicationDate(updateNewsDto.getPublicationDate());
         }
-        NewsDto newsDto = newsMapper.toNewsDto(newsRepository.save(newsFromDb));
-        return newsDto;
+        return newsMapper.toNewsDto(newsRepository.save(newsFromDb));
     }
     public void deleteNews(Integer news_id) {
         newsRepository.deleteById(news_id);

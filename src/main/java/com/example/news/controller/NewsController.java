@@ -3,16 +3,18 @@ package com.example.news.controller;
 import com.example.news.dto.NewNewsDto;
 import com.example.news.dto.NewsDto;
 import com.example.news.dto.NewsParamDto;
+import com.example.news.dto.UpdateNewsDto;
 import com.example.news.service.NewsService;
+
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,6 +22,7 @@ import java.util.List;
 @RequestMapping("/news")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class NewsController {
 
     private final NewsService newsService;
@@ -39,7 +42,7 @@ public class NewsController {
     }
 
     @GetMapping("/{news_id}")
-    public NewsDto getNewsById(@PathVariable Integer news_id) {
+    public NewsDto getNewsById(@PathVariable @PositiveOrZero Integer news_id) {
         log.info("Getting news with id = {}", news_id);
         NewsDto newsDto = newsService.getNewsById(news_id);
         log.info("Got news {}", newsDto);
@@ -48,6 +51,7 @@ public class NewsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Validated
     public NewsDto addNews(@RequestBody @Valid NewNewsDto newNewsDto) {
         log.info("Creating news {}", newNewsDto);
         NewsDto newsDto = newsService.addNews(newNewsDto);
@@ -55,11 +59,11 @@ public class NewsController {
         return newsDto;
     }
 
-    @PatchMapping
+    @PatchMapping("/{news_id}")
     public NewsDto updateNews(@PathVariable Integer news_id,
-                              @RequestParam @Valid NewNewsDto newNewsDto) {
-        log.info("Updating news {} with id {}", newNewsDto, news_id);
-        NewsDto newsDto = newsService.updateNews(news_id, newNewsDto);
+                              @RequestBody @Valid UpdateNewsDto updateNewsDto) {
+        log.info("Updating news {} with id {}", updateNewsDto, news_id);
+        NewsDto newsDto = newsService.updateNews(news_id, updateNewsDto);
         log.info("Updated {} news with id {}", newsDto, news_id);
         return newsDto;
     }
