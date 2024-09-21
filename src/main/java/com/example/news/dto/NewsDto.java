@@ -1,9 +1,7 @@
 package com.example.news.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-import javax.management.Descriptor;
 import java.time.LocalDate;
 
 @Builder

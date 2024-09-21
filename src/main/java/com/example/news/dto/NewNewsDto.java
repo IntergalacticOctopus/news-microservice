@@ -28,6 +28,7 @@ public class NewNewsDto {
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate publicationDate;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

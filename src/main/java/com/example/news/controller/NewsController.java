@@ -90,7 +90,7 @@ public class NewsController {
     @Operation(summary = "Удаление новости")
     @DeleteMapping("/{news_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteNews(@Parameter(description = "ID новости")@PathVariable Integer news_id) {
+    public void deleteNews(@Parameter(description = "ID новости") @PathVariable Integer news_id) {
         log.info("Deleting news with id {}", news_id);
         newsService.deleteNews(news_id);
         log.info("Deleted news with id {}", news_id);

@@ -8,7 +8,7 @@ import com.example.news.exseption.errors.NotFoundException;
 import com.example.news.mapper.NewsMapper;
 import com.example.news.model.News;
 import com.example.news.repository.NewsRepository;
-import com.example.themes.model.Theme;
+import com.example.news.exseption.model.Theme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,8 @@ public class NewsServiceImpl implements NewsService {
 
     private final NewsRepository newsRepository;
     private final NewsMapper newsMapper;
-    public List<NewsDto> getNews (PageRequest pageRequest, NewsParamDto newsParamDto) {
+
+    public List<NewsDto> getNews(PageRequest pageRequest, NewsParamDto newsParamDto) {
         String theme = newsParamDto.getTheme();
         Integer userId = newsParamDto.getUserId();
         LocalDate publicationDate = newsParamDto.getPublicationDate();
@@ -35,19 +36,22 @@ public class NewsServiceImpl implements NewsService {
                 .map(news -> newsMapper.toNewsDto(news))
                 .collect(Collectors.toList());
     }
-    public NewsDto getNewsById (Integer id) {
+
+    public NewsDto getNewsById(Integer id) {
         final News news = newsRepository.getByNewsId(id)
                 .orElseThrow(
                         () -> new NotFoundException("Новость не найдена или уже удалена")
                 );
         return newsMapper.toNewsDto(news);
     }
+
     public NewsDto addNews(NewNewsDto newNewsDto) {
-        Theme theme = new Theme (newNewsDto.getTheme());
+        Theme theme = new Theme(newNewsDto.getTheme());
         News news = newsMapper.toNews(newNewsDto, theme);
         final News newsFromBd = newsRepository.save(news);
         return newsMapper.toNewsDto(newsFromBd);
     }
+
     public NewsDto updateNews(Integer newsId, UpdateNewsDto updateNewsDto) {
         News newsFromDb = newsRepository.findById(newsId)
                 .orElseThrow(
@@ -68,6 +72,7 @@ public class NewsServiceImpl implements NewsService {
         }
         return newsMapper.toNewsDto(newsRepository.save(newsFromDb));
     }
+
     public void deleteNews(Integer news_id) {
         newsRepository.deleteById(news_id);
     }
