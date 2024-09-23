@@ -31,7 +31,7 @@ public class NewsServiceImpl implements NewsService {
 
         List<News> newsList = newsRepository.getNewsByParams(theme, userId, publicationDate, pageRequest);
         if (newsList.isEmpty()) {
-            throw new NotFoundException("Новостей по данному запросу не найдено");
+            throw new NotFoundException("Новость не найдена или уже удалена");
         }
         return newsList.stream()
                 .map(news -> newsMapper.toNewsDto(news))
@@ -43,6 +43,9 @@ public class NewsServiceImpl implements NewsService {
                 .orElseThrow(
                         () -> new NotFoundException("Новость не найдена или уже удалена")
                 );
+        if (news == null) {
+            throw new NotFoundException("Новость не найдена или уже удалена");
+        }
         return newsMapper.toNewsDto(news);
     }
 

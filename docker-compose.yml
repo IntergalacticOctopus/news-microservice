@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  news-microservice:
+    build: .
+    container_name: news-microservice
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/news-microservice
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=pass
+  db:
+    image: postgres:13.7-alpine
+    container_name: postgres
+    ports:
+      - "6541:5432"
+    environment:
+      POSTGRES_PASSWORD: pass
+      POSTGRES_USER: user
+      POSTGRES_DB: news-microservice

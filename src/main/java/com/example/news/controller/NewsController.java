@@ -6,6 +6,7 @@ import com.example.news.dto.NewsParamDto;
 import com.example.news.dto.UpdateNewsDto;
 import com.example.news.service.NewsService;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,11 +38,11 @@ public class NewsController {
     public List<NewsDto> getNews(@Parameter(description = "Номер страницы для пагинации") @RequestParam(required = false, defaultValue = "1") Integer page,
                                  @Parameter(description = "Количество записей на странице") @RequestParam(required = false, defaultValue = "10") Integer size,
                                  @Parameter(description = "Значение для фильтрация по теме") @RequestParam(required = false) String theme,
-                                 @Parameter(description = "Значение для фильтрация по ID автора") @RequestParam(required = false) @PositiveOrZero Integer user_id,
+                                 @Parameter(description = "Значение для фильтрация по ID автора") @RequestParam(value = "user_id", required = false) @PositiveOrZero Integer userId,
                                  @Parameter(description = "Для фильтрация по дате публикации") @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate publication_date) {
         final PageRequest pageRequest = PageRequest.of(page - 1, size);
-        final NewsParamDto newsParamDto = new NewsParamDto(theme, user_id, publication_date);
-        log.info("Getting news with page = {}, size = {}, theme = {}, user_id = {}, publication_date = {}", page, size, theme, user_id, publication_date);
+        final NewsParamDto newsParamDto = new NewsParamDto(theme, userId, publication_date);
+        log.info("Getting news with page = {}, size = {}, theme = {}, user_id = {}, publication_date = {}", page, size, theme, userId, publication_date);
         List<NewsDto> newsDtoList = newsService.getNews(pageRequest, newsParamDto);
         log.info("Got news {}", newsDtoList);
         return newsDtoList;
