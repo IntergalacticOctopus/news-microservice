@@ -5,8 +5,6 @@ import com.example.news.dto.NewsDto;
 import com.example.news.dto.NewsParamDto;
 import com.example.news.dto.UpdateNewsDto;
 import com.example.news.service.NewsService;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

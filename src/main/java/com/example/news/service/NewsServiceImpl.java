@@ -4,7 +4,7 @@ import com.example.news.dto.NewNewsDto;
 import com.example.news.dto.NewsDto;
 import com.example.news.dto.NewsParamDto;
 import com.example.news.dto.UpdateNewsDto;
-import com.example.news.exseption.errors.NotFoundException;
+import com.example.news.exseption.model.NotFoundException;
 import com.example.news.mapper.NewsMapper;
 import com.example.news.model.News;
 import com.example.news.repository.NewsRepository;
