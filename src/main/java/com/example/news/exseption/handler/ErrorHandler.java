@@ -1,5 +1,6 @@
 package com.example.news.exseption.handler;
 
+import com.example.news.exseption.errors.NotFoundException;
 import com.example.news.exseption.model.ApiError;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class ErrorHandler {
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleNotFoundException(final NotFoundException exception) {
+        log.error(exception.getMessage());
+        return new ApiError(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
