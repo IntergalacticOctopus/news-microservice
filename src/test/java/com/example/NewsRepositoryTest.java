@@ -2,7 +2,7 @@ package com.example;
 
 import com.example.news.model.News;
 import com.example.news.repository.NewsRepository;
-import com.example.news.exseption.model.Theme;
+import com.example.news.model.Theme;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

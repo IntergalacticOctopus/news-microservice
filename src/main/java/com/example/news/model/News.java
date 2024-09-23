@@ -1,6 +1,5 @@
 package com.example.news.model;
 
-import com.example.news.exseption.model.Theme;
 import jakarta.persistence.*;
 import lombok.*;
 

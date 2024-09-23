@@ -8,12 +8,14 @@ import com.example.news.exseption.errors.NotFoundException;
 import com.example.news.mapper.NewsMapper;
 import com.example.news.model.News;
 import com.example.news.repository.NewsRepository;
-import com.example.news.exseption.model.Theme;
+import com.example.news.model.Theme;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,7 @@ public class NewsServiceImpl implements NewsService {
         String theme = newsParamDto.getTheme();
         Integer userId = newsParamDto.getUserId();
         LocalDate publicationDate = newsParamDto.getPublicationDate();
+
         List<News> newsList = newsRepository.getNewsByParams(theme, userId, publicationDate, pageRequest);
         if (newsList.isEmpty()) {
             throw new NotFoundException("Новостей по данному запросу не найдено");

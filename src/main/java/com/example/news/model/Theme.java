@@ -1,4 +1,4 @@
-package com.example.news.exseption.model;
+package com.example.news.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

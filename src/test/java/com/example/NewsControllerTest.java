@@ -12,7 +12,7 @@ import com.example.news.dto.NewsDto;
 import com.example.news.mapper.NewsMapper;
 import com.example.news.model.News;
 import com.example.news.service.NewsService;
-import com.example.news.exseption.model.Theme;
+import com.example.news.model.Theme;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
