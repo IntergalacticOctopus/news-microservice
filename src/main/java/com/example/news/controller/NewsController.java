@@ -3,10 +3,14 @@ package com.example.news.controller;
 import com.example.news.dto.NewNewsDto;
 import com.example.news.dto.NewsDto;
 import com.example.news.dto.NewsParamDto;
+import com.example.news.config.KafkaSender;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.example.news.dto.NewsDeletionEvent;
 import com.example.news.dto.UpdateNewsDto;
 import com.example.news.service.NewsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +34,8 @@ import java.util.List;
 public class NewsController {
 
     private final NewsService newsService;
+    private final KafkaSender kafkaSender;
+    private final ObjectMapper objectMapper;
 
     @GetMapping
     @Operation(summary = "Информация о новостях по параметрам")
@@ -89,9 +95,11 @@ public class NewsController {
     @Operation(summary = "Удаление новости")
     @DeleteMapping("/{news_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteNews(@Parameter(description = "ID новости") @PathVariable Integer news_id) {
+    public void deleteNews(@Parameter(description = "ID новости") @PathVariable Integer news_id) throws JsonProcessingException {
         log.info("Deleting news with id {}", news_id);
         newsService.deleteNews(news_id);
+        String newsDeletionEvent = objectMapper.writeValueAsString(new NewsDeletionEvent(news_id));
+        kafkaSender.sendMessage(newsDeletionEvent, "news-deletion-topic");
         log.info("Deleted news with id {}", news_id);
     }
 }

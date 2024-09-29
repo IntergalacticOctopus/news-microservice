@@ -1,6 +1,7 @@
 package com.example.news.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
+import com.example.news.config.KafkaSender;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +17,6 @@ import java.util.Map;
 
 @Configuration
 public class KafkaProducerConfig {
-    // test commit
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
@@ -38,14 +38,5 @@ public class KafkaProducerConfig {
     @Bean
     public KafkaTemplate<String, String> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
-    }
-
-    @Bean
-    public NewTopic topic() {
-        return TopicBuilder
-                .name("t.news")
-                .partitions(1)
-                .replicas(1)
-                .build();
     }
 }

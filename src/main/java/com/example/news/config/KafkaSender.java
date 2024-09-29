@@ -14,19 +14,13 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 public class KafkaSender {
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
 
-    @Value("${topic.name}")
-    private String newsTopic;
+    public void sendMessage(String message, String topicName) {
+        log.info("Sending : {}", message);
+        log.info("--------------------------------");
 
-    private final ObjectMapper objectMapper;
-    private final KafkaTemplate<String, String> kafkaTemplate;
-
-    public String sendMessage(NewsDto newsDto) throws JsonProcessingException {
-        String newsAsMessage = objectMapper.writeValueAsString(newsDto);
-        kafkaTemplate.send(newsTopic, newsAsMessage);
-
-        log.info("News produced {}", newsAsMessage);
-
-        return "message sent";
+        kafkaTemplate.send(topicName, message);
     }
 }
