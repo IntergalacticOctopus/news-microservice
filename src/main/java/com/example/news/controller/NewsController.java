@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.example.news.dto.NewsDeletionEvent;
 import com.example.news.dto.UpdateNewsDto;
 import com.example.news.service.NewsService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import com.fasterxml.jackson.databind.ObjectMapper;

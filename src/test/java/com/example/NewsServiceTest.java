@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.news.config.KafkaSender;
 import com.example.news.dto.NewNewsDto;
 import com.example.news.dto.NewsDto;
 import com.example.news.dto.NewsParamDto;
@@ -29,6 +30,8 @@ public class NewsServiceTest {
     private NewsRepository mockNewsRepository;
     @Mock
     private NewsMapper mockNewsMapper;
+    @Mock
+    private KafkaSender mockKafkaSender;
     @InjectMocks
     private NewsServiceImpl serviceUnderTest;
     News news = new News(1, 1, "TITLE", new Theme("THEME"), LocalDate.of(2024, 6, 8));
@@ -40,7 +43,8 @@ public class NewsServiceTest {
     void setUp() {
         mockNewsRepository = mock(NewsRepository.class);
         mockNewsMapper = mock(NewsMapper.class);
-        serviceUnderTest = new NewsServiceImpl(mockNewsRepository, mockNewsMapper);
+        mockKafkaSender = mock(KafkaSender.class);
+        serviceUnderTest = new NewsServiceImpl(mockKafkaSender, mockNewsRepository, mockNewsMapper);
     }
 
     @Test

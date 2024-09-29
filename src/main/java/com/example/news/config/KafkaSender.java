@@ -1,12 +1,10 @@
 package com.example.news.config;
 
-import com.example.news.dto.NewsDto;
+import com.example.news.dto.NewsDeletionEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -14,13 +12,15 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 public class KafkaSender {
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private final ObjectMapper objectMapper;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public void sendMessage(String message, String topicName) {
-        log.info("Sending : {}", message);
-        log.info("--------------------------------");
+    public String deleteNews(NewsDeletionEvent newsDeletionEvent, String topicName) throws JsonProcessingException {
+        String newsAsMessage = objectMapper.writeValueAsString(newsDeletionEvent);
+        kafkaTemplate.send(topicName, newsAsMessage);
 
-        kafkaTemplate.send(topicName, message);
+        log.info("News produced {}", newsAsMessage);
+
+        return "message sent";
     }
 }

@@ -1,14 +1,13 @@
 package com.example.news.service;
 
-import com.example.news.dto.NewNewsDto;
-import com.example.news.dto.NewsDto;
-import com.example.news.dto.NewsParamDto;
-import com.example.news.dto.UpdateNewsDto;
+import com.example.news.config.KafkaSender;
+import com.example.news.dto.*;
 import com.example.news.exseption.model.NotFoundException;
 import com.example.news.mapper.NewsMapper;
 import com.example.news.model.News;
 import com.example.news.repository.NewsRepository;
 import com.example.news.model.Theme;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -21,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
 
+    private final KafkaSender kafkaSender;
     private final NewsRepository newsRepository;
     private final NewsMapper newsMapper;
 
@@ -77,8 +77,9 @@ public class NewsServiceImpl implements NewsService {
         return newsMapper.toNewsDto(newsRepository.save(newsFromDb));
     }
 
-    public void deleteNews(Integer news_id) {
+    public void deleteNews(Integer news_id) throws JsonProcessingException {
         newsRepository.deleteById(news_id);
+        kafkaSender.deleteNews(new NewsDeletionEvent(news_id), "news-deletion-topic");
     }
 
 }
