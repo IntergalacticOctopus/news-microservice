@@ -8,5 +8,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class NewsDeletionEvent {
     @PositiveOrZero
-    private Integer newId;
+    private Integer newsId;
 }
