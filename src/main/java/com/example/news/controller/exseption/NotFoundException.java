@@ -1,4 +1,4 @@
-package com.example.news.exseption.model;
+package com.example.news.controller.exseption;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

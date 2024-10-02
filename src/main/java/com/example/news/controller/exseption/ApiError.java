@@ -1,4 +1,4 @@
-package com.example.news.exseption.model;
+package com.example.news.controller.exseption;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

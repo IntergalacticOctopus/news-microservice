@@ -2,7 +2,6 @@ package com.example;
 
 import com.example.news.model.News;
 import com.example.news.repository.NewsRepository;
-import com.example.news.model.Theme;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +30,15 @@ public class NewsRepositoryTest {
     private News firstNews;
     private News secondNews;
     private News thirdNews;
-    private Theme firstTheme;
-    private Theme secondTheme;
-    private Theme thirdTheme;
+    private String firstTheme;
+    private String secondTheme;
+    private String thirdTheme;
 
     @BeforeEach
     void setUp() {
-        firstTheme = new Theme(THEME_NAME);
-        secondTheme = new Theme("Second name");
-        thirdTheme = new Theme("Third name");
+        firstTheme = THEME_NAME;
+        secondTheme = "Second name";
+        thirdTheme = "Third name";
 
         firstNews = new News(USER_ID, NEWS_TITLE, firstTheme, PUBLICATION_DATE);
         secondNews = new News(2, "NEWS_TITLE", secondTheme, LocalDate.of(2020, 1, 1));
@@ -56,8 +55,7 @@ public class NewsRepositoryTest {
         assertEquals(NEWS_TITLE, news.getTitle());
         assertEquals(USER_ID, news.getUserId());
         assertEquals(PUBLICATION_DATE, news.getPublicationDate());
-        assertEquals(1, news.getTheme().getThemeId());
-        assertEquals(THEME_NAME, news.getTheme().getThemeName());
+        assertEquals(THEME_NAME, news.getTheme());
 
         List<News> firstNewsListByParams = newsRepository.getNewsByParams(null, 2, null, pageRequest);
         News firstNewsByParams = firstNewsListByParams.get(0);
@@ -67,7 +65,7 @@ public class NewsRepositoryTest {
         assertEquals(LocalDate.of(2020, 1, 1), firstNewsByParams.getPublicationDate());
         assertEquals(2, firstNewsByParams.getUserId());
 
-        List<News> secondNewsListByParams = newsRepository.getNewsByParams(firstTheme.getThemeName(), null, null, pageRequest);
+        List<News> secondNewsListByParams = newsRepository.getNewsByParams(firstTheme, null, null, pageRequest);
         News secondNewsByParams = secondNewsListByParams.get(0);
 
         assertEquals(firstTheme, secondNewsByParams.getTheme());

@@ -1,10 +1,7 @@
 package com.example.news.controller;
 
-import com.example.news.dto.NewNewsDto;
-import com.example.news.dto.NewsDto;
-import com.example.news.dto.NewsParamDto;
+import com.example.news.dto.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.example.news.dto.UpdateNewsDto;
 import com.example.news.service.NewsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,14 +9,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -34,15 +30,12 @@ public class NewsController {
 
     @GetMapping
     @Operation(summary = "Информация о новостях по параметрам")
-    public List<NewsDto> getNews(@Parameter(description = "Номер страницы для пагинации") @RequestParam(required = false, defaultValue = "1") Integer page,
-                                 @Parameter(description = "Количество записей на странице") @RequestParam(required = false, defaultValue = "10") Integer size,
-                                 @Parameter(description = "Значение для фильтрация по теме") @RequestParam(required = false) String theme,
-                                 @Parameter(description = "Значение для фильтрация по ID автора") @RequestParam(value = "user_id", required = false) @PositiveOrZero Integer userId,
-                                 @Parameter(description = "Для фильтрация по дате публикации") @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate publication_date) {
-        final PageRequest pageRequest = PageRequest.of(page - 1, size);
-        final NewsParamDto newsParamDto = new NewsParamDto(theme, userId, publication_date);
-        log.info("Getting news with page = {}, size = {}, theme = {}, user_id = {}, publication_date = {}", page, size, theme, userId, publication_date);
-        List<NewsDto> newsDtoList = newsService.getNews(pageRequest, newsParamDto);
+    public List<NewsDto> getNews(@Valid @ParameterObject ParamsNewsDto paramsNewsDto) {
+        log.info("Getting news with page = {}, size = {}, theme = {}, user_id = {}, publication_date = {}",
+                paramsNewsDto.getPage(), paramsNewsDto.getSize(),
+                paramsNewsDto.getTheme(), paramsNewsDto.getUser_id(),
+                paramsNewsDto.getPublication_date());
+        List<NewsDto> newsDtoList = newsService.getNews(paramsNewsDto);
         log.info("Got news {}", newsDtoList);
         return newsDtoList;
     }
@@ -90,9 +83,15 @@ public class NewsController {
     @Operation(summary = "Удаление новости")
     @DeleteMapping("/{news_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteNews(@Parameter(description = "ID новости") @PathVariable Integer news_id) throws JsonProcessingException {
-        log.info("Deleting news with id {}", news_id);
-        newsService.deleteNews(news_id);
-        log.info("Deleted news with id {}", news_id);
+    public ResponseEntity<Void> deleteNews(@Parameter(description = "ID новости") @PathVariable Integer news_id) throws JsonProcessingException {
+        log.info("Deleting news by id = {}", news_id);
+        boolean isRemoved = newsService.deleteNews(news_id);
+        if (!isRemoved) {
+            log.info("News by id = {} not found", news_id);
+            return ResponseEntity.noContent().build();
+        }
+        log.info("Deleted news by id = {} successfully", news_id);
+
+        return ResponseEntity.ok().build();
     }
 }

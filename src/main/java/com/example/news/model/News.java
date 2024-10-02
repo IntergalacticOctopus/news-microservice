@@ -24,28 +24,16 @@ public class News {
     @Column(name = "title")
     private String title;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "theme_id")
-    private Theme theme;
+    @Column(name = "theme")
+    private String theme;
 
     @Column(name = "publication_date")
     private LocalDate publicationDate;
 
-    public News(Integer userId, String title, Theme theme, LocalDate publicationDate) {
+    public News(Integer userId, String title, String theme, LocalDate publicationDate) {
         this.userId = userId;
         this.title = title;
         this.theme = theme;
         this.publicationDate = publicationDate;
-    }
-
-    @Override
-    public String toString() {
-        return "News{" +
-                "newsId=" + newsId +
-                ", userId=" + userId +
-                ", title='" + title + '\'' +
-                ", theme=" + theme +
-                ", publicationDate=" + publicationDate +
-                '}';
     }
 }

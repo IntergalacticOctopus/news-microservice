@@ -12,7 +12,6 @@ import com.example.news.dto.NewsDto;
 import com.example.news.mapper.NewsMapper;
 import com.example.news.model.News;
 import com.example.news.service.NewsService;
-import com.example.news.model.Theme;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,7 +47,7 @@ public class NewsControllerTest {
     @BeforeEach
     public void setup() {
         newNewsDto = new NewNewsDto("TITLE", "THEME", 1, LocalDate.of(2024, 6, 8));
-        news = new News(1, 1, "TITLE", new Theme("THEME"), LocalDate.of(2024, 6, 8));
+        news = new News(1, 1, "TITLE", "THEME", LocalDate.of(2024, 6, 8));
         newsDto = new NewsDto("TITLE", "THEME", 1, LocalDate.of(2024, 6, 8));
     }
 
@@ -57,13 +56,13 @@ public class NewsControllerTest {
         int page = 1;
         int size = 10;
 
-        when(newsService.getNews(any(), any())).thenReturn(List.of(newsDto));
+        when(newsService.getNews(any())).thenReturn(List.of(newsDto));
 
         mvc.perform(MockMvcRequestBuilders.get("/news?page={page}&size={size}", page, size))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
-        verify(newsService, times(1)).getNews(any(), any());
+        verify(newsService, times(1)).getNews(any());
     }
 
     @Test

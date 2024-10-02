@@ -6,15 +6,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
-@Getter
-@Setter
 @AllArgsConstructor
+@Data
 public class NewNewsDto {
     @NotBlank
     @NotNull
@@ -28,17 +25,4 @@ public class NewNewsDto {
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate publicationDate;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        NewNewsDto that = (NewNewsDto) o;
-        return Objects.equals(title, that.title) && Objects.equals(theme, that.theme) && Objects.equals(userId, that.userId) && Objects.equals(publicationDate, that.publicationDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, theme, userId, publicationDate);
-    }
 }

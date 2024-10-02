@@ -16,7 +16,7 @@ import java.util.List;
 public interface NewsRepository extends JpaRepository<News, Integer> {
 
     @Query("SELECT n FROM News AS n WHERE " +
-            "(LOWER(n.theme.themeName) = LOWER(:theme) OR :theme IS NULL) AND " +
+            "(LOWER(n.theme) = LOWER(:theme) OR :theme IS NULL) AND " +
             "(n.userId = :userId OR :userId IS NULL) AND " +
             "(n.publicationDate = :publicationDate OR CAST(:publicationDate AS DATE) IS NULL)")
     List<News> getNewsByParams(@Param("theme") String theme,

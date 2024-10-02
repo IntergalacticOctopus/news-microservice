@@ -1,4 +1,4 @@
-package com.example.news.config;
+package com.example.news.service;
 
 import com.example.news.dto.NewsDeletionEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,12 +15,11 @@ public class KafkaSender {
     private final ObjectMapper objectMapper;
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public String deleteNews(NewsDeletionEvent newsDeletionEvent, String topicName) throws JsonProcessingException {
+    public void deleteNews(NewsDeletionEvent newsDeletionEvent, String topicName) throws JsonProcessingException {
         String newsAsMessage = objectMapper.writeValueAsString(newsDeletionEvent);
         kafkaTemplate.send(topicName, newsAsMessage);
 
         log.info("News produced {}", newsAsMessage);
 
-        return "message sent";
     }
 }
