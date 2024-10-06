@@ -1,17 +1,20 @@
 package com.example.news.service;
 
-import com.example.news.dto.*;
 import com.example.news.controller.exseption.NotFoundException;
+import com.example.news.dto.NewsDeletionEvent;
 import com.example.news.mapper.NewsMapper;
-import com.example.news.model.News;
+import com.example.news.model.*;
 import com.example.news.repository.NewsRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import com.example.news.dto.ParamsNewsDto;
+import com.example.news.model.News;
 
 @Service
 @RequiredArgsConstructor
@@ -24,10 +27,11 @@ public class NewsServiceImpl implements NewsService {
     private static final String NEWS_NOT_FOUND = "Новость не найдена или уже удалена";
 
     public List<NewsDto> getNews(ParamsNewsDto paramsNewsDto) {
+        PageRequest pageRequest = PageRequest.of(paramsNewsDto.getPage() - 1, paramsNewsDto.getSize());
         List<News> newsList = newsRepository.getNewsByParams(paramsNewsDto.getTheme(),
                 paramsNewsDto.getUser_id(),
                 paramsNewsDto.getPublication_date(),
-                paramsNewsDto.getPageable());
+                pageRequest);
         if (newsList.isEmpty()) {
             throw new NotFoundException(NEWS_NOT_FOUND);
         }

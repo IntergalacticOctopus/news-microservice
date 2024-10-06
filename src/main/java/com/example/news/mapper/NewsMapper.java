@@ -1,27 +1,17 @@
 package com.example.news.mapper;
 
-import com.example.news.dto.NewNewsDto;
-import com.example.news.dto.NewsDto;
+import com.example.news.model.NewNewsDto;
+import com.example.news.model.NewsDto;
 import com.example.news.model.News;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Component
-public class NewsMapper {
-    public NewsDto toNewsDto(News news) {
-        return NewsDto.builder()
-                .title(news.getTitle())
-                .theme(news.getTheme())
-                .userId(news.getUserId())
-                .publicationDate(news.getPublicationDate())
-                .build();
-    }
 
-    public News toNews(NewNewsDto newNewsDto) {
-        return News.builder()
-                .userId(newNewsDto.getUserId())
-                .title(newNewsDto.getTitle())
-                .theme(newNewsDto.getTheme())
-                .publicationDate(newNewsDto.getPublicationDate())
-                .build();
-    }
+@Mapper(componentModel = "spring")
+public interface NewsMapper {
+    @Mapping(target = "userId", source = "newsId") // Отобразим newsId из News в userId в NewsDto
+    NewsDto toNewsDto(News news);
+
+    @Mapping(target = "newsId", source = "userId") // Отобразим userId из NewNewsDto в newsId в News
+    News toNews(NewNewsDto newNewsDto);
 }

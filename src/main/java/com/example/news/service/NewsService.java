@@ -1,8 +1,10 @@
 package com.example.news.service;
 
-import com.example.news.dto.*;
+import com.example.news.model.NewNewsDto;
+import com.example.news.model.NewsDto;
+import com.example.news.model.UpdateNewsDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.data.domain.PageRequest;
+import com.example.news.dto.ParamsNewsDto;
 
 import java.util.List;
 

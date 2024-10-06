@@ -1,0 +1,204 @@
+openapi: 3.0.0
+info:
+  title: Новости API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /news:
+    get:
+      summary: Информация о новостях по параметрам
+      parameters:
+        - name: page
+          in: query
+          description: Номер страницы (по умолчанию 1)
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Количество новостей на странице (по умолчанию 10)
+          schema:
+            type: integer
+        - name: theme
+          in: query
+          description: Тема новостей
+          schema:
+            type: string
+        - name: user_id
+          in: query
+          description: ID пользователя
+          schema:
+            type: integer
+        - name: publication_date
+          in: query
+          description: Дата публикации новости (формат ISO)
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Успешное получение списка новостей
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewsDto'
+
+    post:
+      tags:
+        - Новости
+      summary: Создание новости
+      operationId: addNews
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewNewsDto'
+      responses:
+        '201':
+          description: Новость создана успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsDto'
+
+  /news/{news_id}:
+    get:
+      tags:
+        - Новости
+      summary: Информация о новости по ID
+      operationId: getNewsById
+      parameters:
+        - name: news_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 0
+          description: Идентификатор новости
+      responses:
+        '200':
+          description: Новость
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsDto'
+        '404':
+          description: Новость не найдена
+
+
+    patch:
+      tags:
+        - Новости
+      summary: Обновление новости
+      operationId: updateNews
+      parameters:
+        - name: news_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Идентификатор новости
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNewsDto'
+      responses:
+        '200':
+          description: Новость обновлена успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsDto'
+        '404':
+          description: Новость не найдена
+
+    delete:
+      tags:
+        - Новости
+      summary: Удаление новости
+      operationId: deleteNews
+      parameters:
+        - name: news_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID новости
+      responses:
+        '204':
+          description: Новость удалена успешно
+        '404':
+          description: Новость не найдена
+
+components:
+  schemas:
+    NewsDto:
+      type: object
+      properties:
+        title:
+          type: string
+        theme:
+          type: string
+        user_id:
+          type: integer
+        publication_date:
+          type: string
+          format: date
+
+    NewNewsDto:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 256
+        theme:
+          type: string
+        user_id:
+          type: integer
+          minimum: 0
+        publication_date:
+          type: string
+          format: date
+
+    UpdateNewsDto:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 256
+        theme:
+          type: string
+        user_id:
+          type: integer
+        publication_date:
+          type: string
+          format: date
+
+    ParamsNewsDto:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+          default: 0
+        size:
+          type: integer
+          format: int32
+          default: 10
+        theme:
+          type: string
+          maxLength: 256
+        user_id:
+          type: integer
+          minimum: 0
+        publication_date:
+          type: string
+          format: date
