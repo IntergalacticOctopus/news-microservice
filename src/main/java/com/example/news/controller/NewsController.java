@@ -39,12 +39,12 @@ public class NewsController implements NewsApi {
     @Override
     @GetMapping
     @Operation(summary = "Информация о новостях по параметрам")
-    public ResponseEntity<List<NewsDto>> getNews(
-            @Parameter @Valid @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
-            @Parameter @Valid @RequestParam(value = "size", defaultValue = "10", required = false) Integer size,
-            @Parameter @Valid @RequestParam(value = "theme", required = false) String theme,
-            @Parameter @Valid @RequestParam(value = "user_id", required = false) Integer userId,
-            @Parameter @Valid @RequestParam(value = "publication_date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate publicationDate
+    public ResponseEntity<List<NewsDto>> newsGet(
+            @Parameter @RequestParam(value = "page", defaultValue = "1", required = false) Long page,
+            @Parameter @RequestParam(value = "size", defaultValue = "10", required = false) Long size,
+            @Parameter @RequestParam(value = "theme", required = false) String theme,
+            @Parameter @RequestParam(value = "user_id", required = false) Long userId,
+            @Parameter @RequestParam(value = "publication_date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate publicationDate
     ) {
         log.info("Getting news with page = {}, size = {}, theme = {}, user_id = {}, publication_date = {}",
                 page, size,
@@ -59,7 +59,7 @@ public class NewsController implements NewsApi {
     @Override
     @Operation(summary = "Информация о новостях по ID")
     @GetMapping("/{news_id}")
-    public ResponseEntity<NewsDto> getNewsById(@PathVariable Integer news_id) {
+    public ResponseEntity<NewsDto> getNewsById(@PathVariable Long news_id) {
         log.info("Getting news with id = {}", news_id);
         NewsDto newsDto = newsService.getNewsById(news_id);
         log.info("Got news {}", newsDto);
@@ -90,7 +90,7 @@ public class NewsController implements NewsApi {
                     " theme (String) – Категория новости" +
                     " user_id (Integer) – Идентификатор автора новости" +
                     " publication_date (String) – Дата публикации")
-    public ResponseEntity<NewsDto> updateNews(@PathVariable Integer news_id,
+    public ResponseEntity<NewsDto> updateNews(@PathVariable Long news_id,
                               @RequestBody @Valid UpdateNewsDto updateNewsDto) {
         log.info("Updating news {} with id {}", updateNewsDto, news_id);
         NewsDto newsDto = newsService.updateNews(news_id, updateNewsDto);
@@ -101,7 +101,7 @@ public class NewsController implements NewsApi {
     @Operation(summary = "Удаление новости")
     @DeleteMapping("/{news_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> deleteNews(@PathVariable Integer news_id) {
+    public ResponseEntity<Void> deleteNews(@PathVariable Long news_id) {
         log.info("Deleting news by id = {}", news_id);
         boolean isRemoved = false;
         try {

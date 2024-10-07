@@ -27,7 +27,7 @@ public class NewsServiceImpl implements NewsService {
     private static final String NEWS_NOT_FOUND = "Новость не найдена или уже удалена";
 
     public List<NewsDto> getNews(ParamsNewsDto paramsNewsDto) {
-        PageRequest pageRequest = PageRequest.of(paramsNewsDto.getPage() - 1, paramsNewsDto.getSize());
+        PageRequest pageRequest = PageRequest.of(Math.toIntExact(paramsNewsDto.getPage() - 1), Math.toIntExact(paramsNewsDto.getSize()));
         List<News> newsList = newsRepository.getNewsByParams(paramsNewsDto.getTheme(),
                 paramsNewsDto.getUser_id(),
                 paramsNewsDto.getPublication_date(),
@@ -40,7 +40,7 @@ public class NewsServiceImpl implements NewsService {
                 .collect(Collectors.toList());
     }
 
-    public NewsDto getNewsById(Integer id) {
+    public NewsDto getNewsById(Long id) {
         final News news = newsRepository.getByNewsId(id)
                 .orElseThrow(
                         () -> new NotFoundException(NEWS_NOT_FOUND)
@@ -53,7 +53,7 @@ public class NewsServiceImpl implements NewsService {
         return newsMapper.toNewsDto(newsRepository.save(news));
     }
 
-    public NewsDto updateNews(Integer newsId, UpdateNewsDto updateNewsDto) {
+    public NewsDto updateNews(Long newsId, UpdateNewsDto updateNewsDto) {
         News newsFromDb = newsRepository.findById(newsId)
                 .orElseThrow(() -> new NotFoundException(NEWS_NOT_FOUND));
 
@@ -65,7 +65,7 @@ public class NewsServiceImpl implements NewsService {
         return newsMapper.toNewsDto(newsRepository.save(newsFromDb));
     }
 
-    public boolean deleteNews(Integer news_id) throws JsonProcessingException {
+    public boolean deleteNews(Long news_id) throws JsonProcessingException {
         try {
             newsRepository.findById(news_id).orElseThrow(() -> new NotFoundException("News " + news_id + " not found"));
             newsRepository.deleteById(news_id);

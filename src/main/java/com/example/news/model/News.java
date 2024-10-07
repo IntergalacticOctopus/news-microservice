@@ -16,10 +16,10 @@ public class News {
     @Id
     @Column(name = "news_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer newsId;
+    private Long newsId;
 
     @Column(name = "user_id")
-    private Integer userId;
+    private Long userId;
 
     @Column(name = "title")
     private String title;
@@ -30,7 +30,7 @@ public class News {
     @Column(name = "publication_date")
     private LocalDate publicationDate;
 
-    public News(Integer userId, String title, String theme, LocalDate publicationDate) {
+    public News(Long userId, String title, String theme, LocalDate publicationDate) {
         this.userId = userId;
         this.title = title;
         this.theme = theme;

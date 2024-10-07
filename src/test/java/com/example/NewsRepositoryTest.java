@@ -21,8 +21,8 @@ public class NewsRepositoryTest {
 
     private final String NEWS_TITLE = "First Title";
     private final String THEME_NAME = "First name";
-    private final Integer USER_ID = 100;
-    private final Integer NEWS_ID = 100;
+    private final Long USER_ID = 100L;
+    private final Long NEWS_ID = 100L;
     private final LocalDate PUBLICATION_DATE = LocalDate.of(2024, 6, 8);
 
     final PageRequest pageRequest = PageRequest.of(0, 10);
@@ -41,15 +41,15 @@ public class NewsRepositoryTest {
         thirdTheme = "Third name";
 
         firstNews = new News(USER_ID, NEWS_TITLE, firstTheme, PUBLICATION_DATE);
-        secondNews = new News(2, "NEWS_TITLE", secondTheme, LocalDate.of(2020, 1, 1));
-        thirdNews = new News(3, "title", thirdTheme, LocalDate.of(2025, 1, 1));
+        secondNews = new News(2L, "NEWS_TITLE", secondTheme, LocalDate.of(2020, 1, 1));
+        thirdNews = new News(3L, "title", thirdTheme, LocalDate.of(2025, 1, 1));
         newsRepository.saveAll(List.of(firstNews, secondNews, thirdNews));
 
     }
 
     @Test
     void getNewsByThemeTest() {
-        Optional<News> firstNewsFromDto = newsRepository.getByNewsId(1);
+        Optional<News> firstNewsFromDto = newsRepository.getByNewsId(1L);
         News news = firstNewsFromDto.get();
         assertEquals(1, news.getNewsId());
         assertEquals(NEWS_TITLE, news.getTitle());
@@ -57,7 +57,7 @@ public class NewsRepositoryTest {
         assertEquals(PUBLICATION_DATE, news.getPublicationDate());
         assertEquals(THEME_NAME, news.getTheme());
 
-        List<News> firstNewsListByParams = newsRepository.getNewsByParams(null, 2, null, pageRequest);
+        List<News> firstNewsListByParams = newsRepository.getNewsByParams(null, 2L, null, pageRequest);
         News firstNewsByParams = firstNewsListByParams.get(0);
 
         assertEquals(secondTheme, firstNewsByParams.getTheme());

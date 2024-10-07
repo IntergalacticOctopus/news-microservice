@@ -9,9 +9,9 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface NewsMapper {
-    @Mapping(target = "userId", source = "newsId") // Отобразим newsId из News в userId в NewsDto
+    @Mapping(target = "userId", source = "newsId")
     NewsDto toNewsDto(News news);
 
-    @Mapping(target = "newsId", source = "userId") // Отобразим userId из NewNewsDto в newsId в News
+    @Mapping(target = "newsId", source = "userId")
     News toNews(NewNewsDto newNewsDto);
 }

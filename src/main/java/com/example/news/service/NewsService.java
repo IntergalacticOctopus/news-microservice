@@ -11,11 +11,11 @@ import java.util.List;
 public interface NewsService {
     List<NewsDto> getNews(ParamsNewsDto paramsNewsDto);
 
-    NewsDto getNewsById(Integer id);
+    NewsDto getNewsById(Long id);
 
     NewsDto addNews(NewNewsDto newNewsDto);
 
-    NewsDto updateNews(Integer newsId, UpdateNewsDto updateNewsDto);
+    NewsDto updateNews(Long newsId, UpdateNewsDto updateNewsDto);
 
-    boolean deleteNews(Integer newsId) throws JsonProcessingException;
+    boolean deleteNews(Long newsId) throws JsonProcessingException;
 }

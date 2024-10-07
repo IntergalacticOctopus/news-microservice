@@ -16,23 +16,17 @@ import java.time.LocalDate;
 public class ParamsNewsDto {
     @Parameter(description = "Номер страницы для пагинации")
     @PositiveOrZero
-    Integer page;
+    Long page;
     @Parameter(description = "Количество записей на странице")
     @PositiveOrZero
-    Integer size;
+    Long size;
     @Parameter(description = "Значение для фильтрация по теме")
     String theme;
     @Parameter(description = "Значение для фильтрация по ID автора")
     @PositiveOrZero
-    Integer user_id;
+    Long user_id;
     @Parameter(description = "Для фильтрация по дате публикации")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate publication_date;
 
-    public PageRequest getPageable() {
-        return PageRequest.of(
-                page != null ? page - 1: 0,
-                size != null ? size : 10
-        );
-    }
 }

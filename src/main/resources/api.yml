@@ -15,11 +15,13 @@ paths:
           description: Номер страницы (по умолчанию 1)
           schema:
             type: integer
+            format: int64
         - name: size
           in: query
           description: Количество новостей на странице (по умолчанию 10)
           schema:
             type: integer
+            format: int64
         - name: theme
           in: query
           description: Тема новостей
@@ -30,6 +32,7 @@ paths:
           description: ID пользователя
           schema:
             type: integer
+            format: int64
         - name: publication_date
           in: query
           description: Дата публикации новости (формат ISO)
@@ -77,6 +80,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
             minimum: 0
           description: Идентификатор новости
       responses:
@@ -101,6 +105,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: Идентификатор новости
       requestBody:
         required: true
@@ -129,6 +134,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: ID новости
       responses:
         '204':
@@ -147,6 +153,7 @@ components:
           type: string
         user_id:
           type: integer
+          format: int64
         publication_date:
           type: string
           format: date
@@ -162,6 +169,7 @@ components:
           type: string
         user_id:
           type: integer
+          format: int64
           minimum: 0
         publication_date:
           type: string
@@ -178,6 +186,7 @@ components:
           type: string
         user_id:
           type: integer
+          format: int64
         publication_date:
           type: string
           format: date
@@ -187,17 +196,18 @@ components:
       properties:
         page:
           type: integer
-          format: int32
+          format: int64
           default: 0
         size:
           type: integer
-          format: int32
+          format: int64
           default: 10
         theme:
           type: string
           maxLength: 256
         user_id:
           type: integer
+          format: int64
           minimum: 0
         publication_date:
           type: string

@@ -13,17 +13,17 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface NewsRepository extends JpaRepository<News, Integer> {
+public interface NewsRepository extends JpaRepository<News, Long> {
 
     @Query("SELECT n FROM News AS n WHERE " +
             "(LOWER(n.theme) = LOWER(:theme) OR :theme IS NULL) AND " +
             "(n.userId = :userId OR :userId IS NULL) AND " +
             "(n.publicationDate = :publicationDate OR CAST(:publicationDate AS DATE) IS NULL)")
     List<News> getNewsByParams(@Param("theme") String theme,
-                               @Param("userId") Integer userId,
+                               @Param("userId") Long userId,
                                @Param("publicationDate") LocalDate publicationDate,
                                Pageable pageable);
 
-    Optional<News> getByNewsId(Integer news_id);
+    Optional<News> getByNewsId(Long news_id);
 }
 
