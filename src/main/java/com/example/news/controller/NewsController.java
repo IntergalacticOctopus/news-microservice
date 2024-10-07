@@ -35,8 +35,8 @@ public class NewsController implements NewsApi {
     @GetMapping
     @Operation(summary = "Информация о новостях по параметрам")
     public ResponseEntity<List<NewsDto>> newsGet(
-            @Parameter @RequestParam(value = "page", defaultValue = "1", required = false) Long page,
-            @Parameter @RequestParam(value = "size", defaultValue = "10", required = false) Long size,
+            @Parameter @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
+            @Parameter @RequestParam(value = "size", defaultValue = "10", required = false) Integer size,
             @Parameter @RequestParam(value = "theme", required = false) String theme,
             @Parameter @RequestParam(value = "user_id", required = false) Long userId,
             @Parameter @RequestParam(value = "publication_date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate publicationDate

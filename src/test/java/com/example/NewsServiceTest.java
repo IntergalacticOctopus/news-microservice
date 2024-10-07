@@ -62,7 +62,7 @@ public class NewsServiceTest {
     @Test
     void getNewsListByParametersTest() {
         PageRequest pageRequest = PageRequest.of(0, 10);
-        ParamsNewsDto paramsNewsDto = new ParamsNewsDto(1L, 10L, "THEME", 1L, LocalDate.of(2024, 6, 8));
+        ParamsNewsDto paramsNewsDto = new ParamsNewsDto(1, 10, "THEME", 1L, LocalDate.of(2024, 6, 8));
 
         when(mockNewsRepository.getNewsByParams(paramsNewsDto.getTheme(), paramsNewsDto.getUser_id(), paramsNewsDto.getPublication_date(), pageRequest))
                 .thenReturn(List.of(news));

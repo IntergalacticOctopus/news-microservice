@@ -28,7 +28,7 @@ public class NewsServiceImpl implements NewsService {
     private static final String NEWS_NOT_FOUND = "Новость не найдена или уже удалена";
 
     public List<NewsDto> getNews(ParamsNewsDto paramsNewsDto) {
-        PageRequest pageRequest = PageRequest.of(Math.toIntExact(paramsNewsDto.getPage() - 1), Math.toIntExact(paramsNewsDto.getSize()));
+        PageRequest pageRequest = PageRequest.of(paramsNewsDto.getPage() - 1, paramsNewsDto.getSize());
         List<News> newsList = newsRepository.getNewsByParams(paramsNewsDto.getTheme(),
                 paramsNewsDto.getUser_id(),
                 paramsNewsDto.getPublication_date(),

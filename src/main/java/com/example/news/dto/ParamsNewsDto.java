@@ -15,10 +15,10 @@ import java.time.LocalDate;
 public class ParamsNewsDto {
     @Parameter(description = "Номер страницы для пагинации")
     @PositiveOrZero
-    Long page;
+    Integer page;
     @Parameter(description = "Количество записей на странице")
     @PositiveOrZero
-    Long size;
+    Integer size;
     @Parameter(description = "Значение для фильтрация по теме")
     String theme;
     @Parameter(description = "Значение для фильтрация по ID автора")
