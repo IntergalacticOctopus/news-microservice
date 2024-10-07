@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id:  1
+      author: author
+      comment: first liquibase migration
+      changes:
+        - createTable:
+            tableName: news
+            columns:
+              - column:
+                  name:  news_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name:  user_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: theme
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: publication_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
