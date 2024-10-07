@@ -5,17 +5,12 @@ import com.example.news.model.NewsDto;
 import com.example.news.model.UpdateNewsDto;
 import com.example.news.service.NewsService;
 import com.example.news.dto.ParamsNewsDto;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -91,12 +86,13 @@ public class NewsController implements NewsApi {
                     " user_id (Integer) – Идентификатор автора новости" +
                     " publication_date (String) – Дата публикации")
     public ResponseEntity<NewsDto> updateNews(@PathVariable Long news_id,
-                              @RequestBody @Valid UpdateNewsDto updateNewsDto) {
+                                              @RequestBody @Valid UpdateNewsDto updateNewsDto) {
         log.info("Updating news {} with id {}", updateNewsDto, news_id);
         NewsDto newsDto = newsService.updateNews(news_id, updateNewsDto);
         log.info("Updated {} news with id {}", newsDto, news_id);
         return ResponseEntity.ok(newsDto);
     }
+
     @Override
     @Operation(summary = "Удаление новости")
     @DeleteMapping("/{news_id}")

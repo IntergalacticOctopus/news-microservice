@@ -86,6 +86,7 @@ public class NewsControllerTest {
 
         verify(newsService, times(1)).getNewsById(newsId);
     }
+
     @Test
     public void testAddNews_Successful() throws Exception {
         when(newsService.addNews(newNewsDto)).thenReturn(newsDto);

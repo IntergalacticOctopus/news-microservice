@@ -6,7 +6,9 @@ import com.example.news.model.NewNewsDto;
 import com.example.news.model.NewsDto;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
+
 import java.time.LocalDate;
+
 import com.example.news.mapper.NewsMapper;
 import com.example.news.model.News;
 import org.junit.jupiter.api.BeforeEach;
